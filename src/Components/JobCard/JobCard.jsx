@@ -26,7 +26,7 @@ export const JobCard = ({ job }) => {
 
         <div className="card-actions justify-end mt-4">
           <Link
-            to={`/allJobs/${_id}`}
+            to={`/jobDetails/${_id}`}
             className="btn rounded-full bg-gradient-to-r from-indigo-500 to-blue-300 hover:from-blue-600 hover:to-indigo-500 text-white btn-sm w-full"
           >
             View Details

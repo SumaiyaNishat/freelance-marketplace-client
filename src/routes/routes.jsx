@@ -1,12 +1,13 @@
 import { createBrowserRouter } from "react-router";
-import Home from "../Components/Home/Home.jsx";
+import Home from "../Pages/Home/Home.jsx";
 import RootLayout from "../Layouts/RootLayout.jsx";
-import AllJobs from "../Components/AllJobs/AllJobs.jsx";
-import AddJob from "../Components/AddJob/AddJob.jsx";
-import MyTasks from "../Components/MyTasks/MyTasks.jsx";
+import AllJobs from "../Pages/AllJobs/AllJobs.jsx";
+import AddJob from "../Pages/AddJob/AddJob.jsx";
+import MyTasks from "../Pages/MyTasks/MyTasks.jsx";
 import AuthLayout from "../Layouts/AuthLayout.jsx";
 import Login from "../Components/Login/Login.jsx";
 import Register from "../Components/Register/Register.jsx";
+import JobDetails from "../Pages/JobDetails/JobDetails.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -18,17 +19,21 @@ export const router = createBrowserRouter([
         element: <Home></Home>,
       },
       {
-        path: 'allJobs',
+        path: "/allJobs",
         element: <AllJobs></AllJobs>,
-        loader: () => fetch('http://localhost:3000/freelance'),
+        loader: () => fetch("http://localhost:3000/freelance"),
       },
       {
-        path: 'addJob',
-        element: <AddJob></AddJob>
+        path: "/addJob",
+        element: <AddJob></AddJob>,
       },
       {
-        path: 'myAcceptedTasks,',
-        element: <MyTasks></MyTasks>
+        path:"/jobDetails/:id",
+        element:<JobDetails></JobDetails>,
+      },
+      {
+        path: "/myAcceptedTasks,",
+        element: <MyTasks></MyTasks>,
       },
     ],
   },

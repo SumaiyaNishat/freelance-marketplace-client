@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from '../../contexts/AuthContext';
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+
 
 const Register = () => {
   const { createUser, updateProfileFunc, signOutUser, signInWithGoogle } = useContext(AuthContext);
@@ -131,8 +131,6 @@ const Register = () => {
           </form>
         </div>
       </div>
-
-      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

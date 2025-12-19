@@ -29,7 +29,7 @@ const Navbar = () => {
      {
       user && <>
        <li>
-        <NavLink to="/addAJobs">Add Job</NavLink>
+        <NavLink to="/addJob">Add Job</NavLink>
       </li>
       <li>
         <NavLink to="/myAcceptedTasks">My Tasks</NavLink>
