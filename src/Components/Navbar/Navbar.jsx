@@ -1,8 +1,23 @@
-import React from 'react'
+import React, { use } from 'react'
 import { Link, NavLink } from 'react-router';
+import { AuthContext } from '../../contexts/AuthContext';
+
 
 
 const Navbar = () => {
+
+    const { user, signOutUser } =use(AuthContext);
+
+     const handleLogout = () => {
+    signOutUser()
+      .then(() => {
+        console.log("User signed out successfully");
+      })
+      .catch((error) => {
+        console.log("Logout error:", error.message);
+      });
+  };
+
      const links = (
     <>
       <li>
@@ -11,12 +26,17 @@ const Navbar = () => {
       <li>
         <NavLink to="/allJobs">All Jobs</NavLink>
       </li>
-      <li>
+     {
+      user && <>
+       <li>
         <NavLink to="/addAJobs">Add Job</NavLink>
       </li>
       <li>
         <NavLink to="/myAcceptedTasks">My Tasks</NavLink>
       </li>
+      </>
+     }
+      
       
 
     </>
@@ -58,7 +78,23 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         
-         <Link to="/register" className='bg-blue-500 w-25 h-8 text-center text-white rounded-md'>Login</Link>
+         {user ? (
+        <div className="flex items-center gap-4">
+          <span>{user.displayName || user.email}</span>
+          <button
+            onClick={handleLogout}
+            className="btn btn-sm btn-outline"
+          >
+            Logout
+          </button>
+        </div>
+      ):
+          <div className='flex gap-2'>
+            <Link to="/auth/login" className='bg-blue-300 w-25 h-8 text-center text-white rounded-md'>Login</Link>
+
+            <Link to="/auth/register" className='bg-blue-500 w-25 h-8 text-center text-white rounded-md'>Register</Link>
+          </div>
+         }
         
       </div>
       
