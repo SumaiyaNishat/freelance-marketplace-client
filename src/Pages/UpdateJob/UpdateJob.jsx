@@ -2,6 +2,7 @@ import React from 'react'
 import { useLoaderData, useNavigate } from "react-router";
 import { toast } from 'react-toastify';
 
+
 const UpdateJob = () => {
   const data = useLoaderData();
   const freelance = data;
@@ -33,6 +34,8 @@ const UpdateJob = () => {
         toast.error("Failed to update job");
       });
   };
+
+  
 
   return (
     <div className="card bg-base-100 w-full max-w-md mx-auto shadow-2xl rounded-2xl mt-20">
@@ -105,6 +108,8 @@ const UpdateJob = () => {
           >
             Update Job
           </button>
+
+                   
         </form>
       </div>
     </div>
