@@ -6,4 +6,4 @@ const MyTasks = () => {
   )
 }
 
-export default MyTasks
+export default MyTasks;

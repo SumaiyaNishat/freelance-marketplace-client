@@ -11,6 +11,7 @@ const JobDetails = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
 
+
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -78,7 +79,7 @@ const JobDetails = () => {
                   // onClick={handleAcceptJob}
                   className="btn rounded-full bg-gradient-to-r from-indigo-500 to-blue-300 hover:from-blue-600 hover:to-indigo-500"
                 >
-                  Accept Job
+                  Accept
                 </button>
 
                 <Link

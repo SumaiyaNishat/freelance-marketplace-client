@@ -9,6 +9,9 @@ import Login from "../Components/Login/Login.jsx";
 import Register from "../Components/Register/Register.jsx";
 import JobDetails from "../Pages/JobDetails/JobDetails.jsx";
 import UpdateJob from "../Pages/UpdateJob/UpdateJob.jsx";
+import PrivateRoute from "./PrivateRoute.jsx";
+import MyAddedJobs from "../Pages/MyAddedJobs/MyAddedJobs.jsx";
+;
 
 export const router = createBrowserRouter([
   {
@@ -36,14 +39,20 @@ export const router = createBrowserRouter([
           fetch(`http://localhost:3000/freelance/${params.id}`),
       },
       {
+        path:'/myJob',
+        element:(<PrivateRoute>
+          <MyAddedJobs></MyAddedJobs>
+        </PrivateRoute>)
+      },
+      {
         path: "/updateJob/:id",
         element: <UpdateJob></UpdateJob>,
         loader: ({ params }) =>
           fetch(`http://localhost:3000/freelance/${params.id}`),
       },
       {
-        path: "/myAcceptedTasks,",
-        element: <MyTasks></MyTasks>,
+        path: "/myAcceptedTasks",
+        element: (<PrivateRoute><MyTasks></MyTasks></PrivateRoute>)
       },
     ],
   },
