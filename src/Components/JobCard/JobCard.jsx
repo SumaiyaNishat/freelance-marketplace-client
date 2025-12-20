@@ -7,11 +7,11 @@ export const JobCard = ({ job }) => {
     <div className="card bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 ">
       
      
-      <figure className="h-52 overflow-hidden">
+      <figure className="h-50 overflow-hidden">
         <img
           src={coverImage}
           alt={title}
-          className="w-100 h-full p-2 object-cover hover:scale-110 transition-transform duration-300"
+          className="w-55 h-full p-2 object-cover hover:scale-110 transition-transform duration-300"
         />
       </figure>
 
