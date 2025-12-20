@@ -12,27 +12,29 @@ const JobDetails = () => {
   const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext);
 
-
-    const handleAcceptJob = () => {
-    fetch("http://localhost:3000/tasks", {
+const handleAcceptJob = async () => {
+  try {
+    const res = await fetch("http://localhost:3000/tasks", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...freelance,
-        added_By: user.email,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        Swal.fire("Job accepted successfully!");
-        navigate("/myAcceptedTasks");
-      })
-      .catch((err) => console.log(err));
-  };
-  
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...freelance, added_By: user?.email || "" }),
+    });
+
+    if (!res.ok) {
+      const text = await res.text(); // get raw HTML or error
+      console.error("Server error:", text);
+      throw new Error(`Server responded with status ${res.status}`);
+    }
+
+    const data = await res.json();
+    console.log("Task created:", data);
+    Swal.fire("Job accepted successfully!");
+    navigate("/myAcceptedTasks");
+  } catch (err) {
+    console.error("Failed to accept job:", err);
+    Swal.fire("Failed to accept job");
+  }
+};
 
 
   const handleDelete = () => {

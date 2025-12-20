@@ -11,12 +11,14 @@ import JobDetails from "../Pages/JobDetails/JobDetails.jsx";
 import UpdateJob from "../Pages/UpdateJob/UpdateJob.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
 import MyAddedJobs from "../Pages/MyAddedJobs/MyAddedJobs.jsx";
+import ErrorPage from "../Pages/ErrorPage.jsx";
 ;
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout></RootLayout>,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -30,11 +32,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/addJob",
-        element: <AddJob></AddJob>,
+        element: (<PrivateRoute><AddJob></AddJob></PrivateRoute>),
       },
       {
         path: "/jobDetails/:id",
-        element: <JobDetails></JobDetails>,
+        element: (<PrivateRoute><JobDetails></JobDetails></PrivateRoute>),
         loader: ({ params }) =>
           fetch(`http://localhost:3000/freelance/${params.id}`),
       },
@@ -59,6 +61,7 @@ export const router = createBrowserRouter([
   {
     path: "/auth",
     element: <AuthLayout></AuthLayout>,
+     errorElement: <ErrorPage />,
     children: [
       {
         path: "/auth/login",
