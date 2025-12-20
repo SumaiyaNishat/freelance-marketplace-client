@@ -9,7 +9,30 @@ const JobDetails = () => {
   const freelance = data;
   console.log(freelance);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext);
+
+
+    const handleAcceptJob = () => {
+    fetch("http://localhost:3000/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...freelance,
+        added_By: user.email,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        Swal.fire("Job accepted successfully!");
+        navigate("/myAcceptedTasks");
+      })
+      .catch((err) => console.log(err));
+  };
+  
 
 
   const handleDelete = () => {
@@ -24,7 +47,7 @@ const JobDetails = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         fetch(`http://localhost:3000/freelance/${freelance._id}`, {
-          method: "Delete",
+          method: "DELETE",
           headers: { "Content-Type": "application/json" },
         })
           .then((res) => res.json())
@@ -43,6 +66,7 @@ const JobDetails = () => {
       }
     });
   };
+    
   return (
     <div className=" bg-blue-100">
       <div className="max-w-6xl mx-auto px-5 py-25">
@@ -76,7 +100,7 @@ const JobDetails = () => {
 
               <div className="pt-6 flex justify-center gap-4">
                 <button
-                  // onClick={handleAcceptJob}
+                  onClick={handleAcceptJob}
                   className="btn rounded-full bg-gradient-to-r from-indigo-500 to-blue-300 hover:from-blue-600 hover:to-indigo-500"
                 >
                   Accept
