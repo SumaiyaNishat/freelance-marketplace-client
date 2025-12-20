@@ -3,6 +3,8 @@ import Banner from '../../Components/Banner/Banner'
 import { useLoaderData } from 'react-router'
 import { JobCard } from '../../Components/JobCard/JobCard';
 import TopCategories from '../../Components/TopCategories/TopCategories';
+import AboutSection from '../../Components/AboutSection/AboutSection';
+
 
 const Home = () => {
   const data = useLoaderData();
@@ -22,6 +24,7 @@ Explore new openings daily and<br/> apply easily to find the right job that matc
 
       </div>
       <TopCategories></TopCategories>
+            <AboutSection></AboutSection>
     </div>
   )
 }

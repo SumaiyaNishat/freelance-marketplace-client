@@ -41,7 +41,7 @@ const TopCategories = () => {
                 className="bg-base-100 shadow-md rounded-2xl p-6 text-center cursor-pointer hover:shadow-xl transition"
               >
                 <Icon className="w-10 h-10 mx-auto text-indigo-600 mb-3" />
-                <h3 className="font-medium text-sm">{cat.title}</h3>
+                <h3 className="font-medium text-sm">{category.title}</h3>
               </motion.div>
             );
           })}
