@@ -1,4 +1,4 @@
-import React, { use } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router';
 import { AuthContext } from '../../contexts/AuthContext';
 
@@ -7,6 +7,18 @@ import { AuthContext } from '../../contexts/AuthContext';
 const Navbar = () => {
 
     const { user, signOutUser } =use(AuthContext);
+   const [theme, setTheme] = useState(localStorage.getItem('theme') || "light")
+
+    useEffect(() => {
+    const html = document.querySelector('html')
+     html.setAttribute("data-theme", theme)
+     localStorage.setItem("theme", theme)
+  }, [theme])
+
+
+  const handleTheme = (checked) => {
+    setTheme(checked ? "dark": "light")
+  }
 
      const handleLogout = () => {
     signOutUser()
@@ -20,28 +32,23 @@ const Navbar = () => {
 
      const links = (
     <>
-      <li>
-        <NavLink to="/">Home</NavLink>
+      <li className="hover:bg-blue-200">
+        <NavLink to="/" className={({ isActive }) => (isActive ? "bg-blue-300" : "")}>Home</NavLink>
       </li>
-      <li>
-        <NavLink to="/allJobs">All Jobs</NavLink>
+      <li className="hover:bg-blue-200">
+        <NavLink to="/allJobs"  className={({ isActive }) => (isActive ? "bg-blue-300" : "")}>All Jobs</NavLink>
       </li>
 
-     {
-      user && <>
-       <li>
-        <NavLink to="/addJob">Add Job</NavLink>
+       <li className="hover:bg-blue-200">
+        <NavLink to="/addJob"  className={({ isActive }) => (isActive ? "bg-blue-300" : "")}>Add Job</NavLink>
       </li>
-      </>
-     }
-     <li>
-        <NavLink to="/myJob">My Add Job</NavLink>
+    
+     <li className="hover:bg-blue-200">
+        <NavLink to="/myJob"  className={({ isActive }) => (isActive ? "bg-blue-300" : "")}>My Add Job</NavLink>
       </li>
-      <li>
-        <NavLink to="/myAcceptedTasks">My Tasks</NavLink>
+      <li className="hover:bg-blue-200">
+        <NavLink to="/myAcceptedTasks"  className={({ isActive }) => (isActive ? "bg-blue-300" : "")}>My Tasks</NavLink>
       </li>
-      
-      
 
     </>
   );
@@ -74,13 +81,19 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl font-bold">Freelance<span className="text-blue-800">MarketPlace</span>
+        <a className="btn btn-ghost text-2xl font-bold">Freelance<span className="text-blue-800">MarketPlace</span>
         </a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{links}</ul>
+        
       </div>
-      <div className="navbar-end">
+      <div className="navbar-end gap-2">
+        <input
+           onChange={(e)=> handleTheme(e.target.checked)}
+           type="checkbox"
+           defaultChecked={localStorage.getItem('theme') === "dark"}
+           className="toggle"/>
         
          {user ? (
         <div className="flex items-center gap-4">
