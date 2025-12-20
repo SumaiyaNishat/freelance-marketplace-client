@@ -8,6 +8,7 @@ import AuthLayout from "../Layouts/AuthLayout.jsx";
 import Login from "../Components/Login/Login.jsx";
 import Register from "../Components/Register/Register.jsx";
 import JobDetails from "../Pages/JobDetails/JobDetails.jsx";
+import UpdateJob from "../Pages/UpdateJob/UpdateJob.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -28,8 +29,16 @@ export const router = createBrowserRouter([
         element: <AddJob></AddJob>,
       },
       {
-        path:"/jobDetails/:id",
-        element:<JobDetails></JobDetails>,
+        path: "/jobDetails/:id",
+        element: <JobDetails></JobDetails>,
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/freelance/${params.id}`),
+      },
+      {
+        path: "/updateJob/:id",
+        element: <UpdateJob></UpdateJob>,
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/freelance/${params.id}`),
       },
       {
         path: "/myAcceptedTasks,",

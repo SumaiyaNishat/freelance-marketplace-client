@@ -13,7 +13,7 @@ const AllJobs = () => {
       </div>
       <div className='grid grid-cols-3 lg:grid-cols-4 gap-2 w-11/12 mx-auto'>
       {
-        data.map(job => <JobCard key={job.id} job={job}></JobCard>)
+        data.map(job => <JobCard key={job._id} job={job}></JobCard>)
       }
       </div>
     </div>
