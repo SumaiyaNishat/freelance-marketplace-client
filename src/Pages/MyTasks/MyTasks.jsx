@@ -60,7 +60,12 @@ const MyTasks = () => {
     }
   };
 
-  if (loading) return <div className="text-center mt-10">Loading tasks...</div>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-[50vh]">
+        <div className="w-16 h-16 border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full animate-spin"></div>
+      </div>
+    );
   if (tasks.length === 0)
     return <div className="text-center mt-10">No accepted tasks yet.</div>;
 
