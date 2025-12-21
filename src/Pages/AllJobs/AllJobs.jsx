@@ -17,7 +17,7 @@ const AllJobs = () => {
           clients today.
         </p>
       </div>
-      <div className="grid grid-cols-3 lg:grid-cols-4 gap-2 w-11/12 mx-auto">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 w-11/12 mx-auto">
         {data.map((job) => (
           <JobCard key={job._id} job={job}></JobCard>
         ))}

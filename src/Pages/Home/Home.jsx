@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Banner from "../../Components/Banner/Banner";
 import { useLoaderData } from "react-router";
 import { JobCard } from "../../Components/JobCard/JobCard";
@@ -6,8 +6,26 @@ import TopCategories from "../../Components/TopCategories/TopCategories.jsx";
 import AboutSection from "../../Components/AboutSection/AboutSection";
 
 const Home = () => {
-  const data = useLoaderData();
-  console.log(data);
+  const freelanceData = useLoaderData();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    
+    setLoading(true);
+    setTimeout(() => {
+      setData(freelanceData);
+      setLoading(false);
+    }, 200); 
+  })
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[60vh]">
+        <div className="w-16 h-16 border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-10">
@@ -22,14 +40,14 @@ const Home = () => {
           <br /> apply easily to find the right job that matches your skills and
           career goals.
         </p>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 w-11/12 mx-auto">
-          {data.map((job) => (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 w-11/12 mx-auto">
+          {freelanceData.map((job) => (
             <JobCard key={job._id} job={job}></JobCard>
           ))}
         </div>
       </div>
-      <TopCategories></TopCategories>
-      <AboutSection></AboutSection>
+      <TopCategories />
+      <AboutSection />
     </div>
   );
 };
