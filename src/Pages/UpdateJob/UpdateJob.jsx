@@ -1,7 +1,6 @@
-import React from 'react'
+import React from "react";
 import { useLoaderData, useNavigate } from "react-router";
-import { toast } from 'react-toastify';
-
+import { toast } from "react-toastify";
 
 const UpdateJob = () => {
   const data = useLoaderData();
@@ -17,14 +16,17 @@ const UpdateJob = () => {
       summary: e.target.summary.value,
       coverImage: e.target.coverImage.value,
     };
-  
-    fetch(`http://localhost:3000/freelance/${freelance._id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedJob),
-    })
+
+    fetch(
+      `https://freelance-marketplace-api-server-ten.vercel.app/freelance/${freelance._id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedJob),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         toast.success("Job updated successfully!");
@@ -35,19 +37,12 @@ const UpdateJob = () => {
       });
   };
 
-  
-
   return (
     <div className="card bg-base-100 w-full max-w-md mx-auto shadow-2xl rounded-2xl mt-20">
       <div className="card-body p-6">
-        <h2 className="text-2xl font-bold text-center mb-6">
-          Update Job
-        </h2>
+        <h2 className="text-2xl font-bold text-center mb-6">Update Job</h2>
 
-        <form 
-        onSubmit={handleSubmit}
-         className="space-y-4">
-
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Job Title */}
           <div>
             <label className="label font-medium">Job Title</label>
@@ -108,8 +103,6 @@ const UpdateJob = () => {
           >
             Update Job
           </button>
-
-                   
         </form>
       </div>
     </div>

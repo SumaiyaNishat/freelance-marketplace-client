@@ -12,8 +12,6 @@ import UpdateJob from "../Pages/UpdateJob/UpdateJob.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
 import MyAddedJobs from "../Pages/MyAddedJobs/MyAddedJobs.jsx";
 import ErrorPage from "../Pages/ErrorPage.jsx";
-;
-
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -23,45 +21,69 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Home></Home>,
-        loader: () => fetch('http://localhost:3000/latest-freelance')
+        loader: () =>
+          fetch(
+            "https://freelance-marketplace-api-server-ten.vercel.app/latest-freelance"
+          ),
       },
       {
         path: "/allJobs",
         element: <AllJobs></AllJobs>,
-        loader: () => fetch("http://localhost:3000/freelance"),
+        loader: () =>
+          fetch(
+            "https://freelance-marketplace-api-server-ten.vercel.app/freelance"
+          ),
       },
       {
         path: "/addJob",
-        element: (<PrivateRoute><AddJob></AddJob></PrivateRoute>),
+        element: (
+          <PrivateRoute>
+            <AddJob></AddJob>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/jobDetails/:id",
-        element: (<PrivateRoute><JobDetails></JobDetails></PrivateRoute>),
+        element: (
+          <PrivateRoute>
+            <JobDetails></JobDetails>
+          </PrivateRoute>
+        ),
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/freelance/${params.id}`),
+          fetch(
+            `https://freelance-marketplace-api-server-ten.vercel.app/freelance/${params.id}`
+          ),
       },
       {
-        path:'/myJob',
-        element:(<PrivateRoute>
-          <MyAddedJobs></MyAddedJobs>
-        </PrivateRoute>)
+        path: "/myJob",
+        element: (
+          <PrivateRoute>
+            <MyAddedJobs></MyAddedJobs>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/updateJob/:id",
         element: <UpdateJob></UpdateJob>,
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/freelance/${params.id}`),
+          fetch(
+            `https://freelance-marketplace-api-server-ten.vercel.app/freelance/${params.id}`
+          ),
       },
       {
         path: "/myAcceptedTasks",
-        element: (<PrivateRoute><MyTasks></MyTasks></PrivateRoute>)
+        element: (
+          <PrivateRoute>
+            <MyTasks></MyTasks>
+          </PrivateRoute>
+        ),
       },
     ],
   },
   {
     path: "/auth",
     element: <AuthLayout></AuthLayout>,
-     errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/auth/login",

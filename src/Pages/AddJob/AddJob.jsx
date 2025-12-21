@@ -19,7 +19,7 @@ const AddJob = () => {
     };
     console.log(jobData);
 
-    fetch("http://localhost:3000/freelance", {
+    fetch("https://freelance-marketplace-api-server-ten.vercel.app/freelance", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(jobData),

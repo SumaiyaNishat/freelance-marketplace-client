@@ -9,38 +9,40 @@ const JobDetails = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-const handleAcceptJob = async () => {
-  try {
-    
-    const task = {
-      jobId: freelance._id,      
-      title: freelance.title,
-      summary: freelance.summary,
-      coverImage: freelance.coverImage,
-      category: freelance.category,
-      postedBy: freelance.postedBy,
-      workerEmail: user.email,   
-      status: "accepted",
-      acceptedAt: new Date(),
-    };
+  const handleAcceptJob = async () => {
+    try {
+      const task = {
+        jobId: freelance._id,
+        title: freelance.title,
+        summary: freelance.summary,
+        coverImage: freelance.coverImage,
+        category: freelance.category,
+        postedBy: freelance.postedBy,
+        workerEmail: user.email,
+        status: "accepted",
+        acceptedAt: new Date(),
+      };
 
-    const res = await fetch("http://localhost:3000/tasks", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(task),
-    });
+      const res = await fetch(
+        "https://freelance-marketplace-api-server-ten.vercel.app/tasks",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(task),
+        }
+      );
 
-    if (!res.ok) throw new Error("Failed to accept job");
+      if (!res.ok) throw new Error("Failed to accept job");
 
-    const data = await res.json();
-    console.log("Task created:", data);
-    Swal.fire("Job accepted successfully!");
-    navigate("/myAcceptedTasks"); 
-  } catch (err) {
-    console.error("Failed to accept job:", err);
-    Swal.fire("This job is already accepted or there was an error!");
-  }
-};
+      const data = await res.json();
+      console.log("Task created:", data);
+      Swal.fire("Job accepted successfully!");
+      navigate("/myAcceptedTasks");
+    } catch (err) {
+      console.error("Failed to accept job:", err);
+      Swal.fire("This job is already accepted or there was an error!");
+    }
+  };
 
   const handleDelete = () => {
     Swal.fire({
@@ -53,9 +55,12 @@ const handleAcceptJob = async () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/freelance/${freelance._id}`, {
-          method: "DELETE",
-        })
+        fetch(
+          `https://freelance-marketplace-api-server-ten.vercel.app/freelance/${freelance._id}`,
+          {
+            method: "DELETE",
+          }
+        )
           .then(() => {
             Swal.fire("Deleted!", "Job has been deleted.", "success");
             navigate("/allJobs");

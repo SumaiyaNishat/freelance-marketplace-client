@@ -11,7 +11,9 @@ const MyTasks = () => {
 
   const fetchTasks = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/my-tasks?added_By=${user.email}`);
+      const res = await fetch(
+        `https://freelance-marketplace-api-server-ten.vercel.app/my-tasks?added_By=${user.email}`
+      );
       const data = await res.json();
       setTasks(data);
       setLoading(false);
@@ -27,11 +29,14 @@ const MyTasks = () => {
   // MARK AS DONE
   const handleDone = async (taskId) => {
     try {
-      await fetch(`http://localhost:3000/my-tasks/${taskId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "done" }),
-      });
+      await fetch(
+        `https://freelance-marketplace-api-server-ten.vercel.app/my-tasks/${taskId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: "done" }),
+        }
+      );
       toast.success("Task marked as done!");
       fetchTasks();
     } catch (err) {
@@ -43,7 +48,10 @@ const MyTasks = () => {
   // CANCEL TASK
   const handleCancel = async (taskId) => {
     try {
-      await fetch(`http://localhost:3000/my-tasks/${taskId}`, { method: "DELETE" });
+      await fetch(
+        `https://freelance-marketplace-api-server-ten.vercel.app/my-tasks/${taskId}`,
+        { method: "DELETE" }
+      );
       toast.success("Task canceled!");
       fetchTasks();
     } catch (err) {
@@ -53,7 +61,8 @@ const MyTasks = () => {
   };
 
   if (loading) return <div className="text-center mt-10">Loading tasks...</div>;
-  if (tasks.length === 0) return <div className="text-center mt-10">No accepted tasks yet.</div>;
+  if (tasks.length === 0)
+    return <div className="text-center mt-10">No accepted tasks yet.</div>;
 
   return (
     <div className="max-w-6xl mx-auto p-4">
