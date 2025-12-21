@@ -81,8 +81,8 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-        <a className="btn btn-ghost text-2xl font-bold">Freelance<span className="text-blue-800">MarketPlace</span>
-        </a>
+        <Link to="/" className="btn btn-ghost text-2xl font-bold">Freelance<span className="text-blue-800">MarketPlace</span>
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex ">
         <ul className="menu menu-horizontal px-1">{links}</ul>
@@ -95,17 +95,33 @@ const Navbar = () => {
            defaultChecked={localStorage.getItem('theme') === "dark"}
            className="toggle"/>
         
-         {user ? (
-        <div className="flex items-center gap-4">
-          <span>{user.displayName || user.email}</span>
-          <button
-            onClick={handleLogout}
-            className="btn btn-sm btn-outline"
-          >
-            Logout
-          </button>
-        </div>
-      ):
+        {user ? (
+  <div className="relative group">
+    {/* Avatar */}
+    <img
+      src={user.photoURL || "https://i.ibb.co.com/Swh1pkqf/islamic-cartoon-profile-picture-10957076.png"}
+      alt="user"
+      className="w-10 h-10 rounded-full border cursor-pointer"
+    />
+
+    {/* Hover Dropdown */}
+    <div className="absolute right-0 mt-2 w-44 bg-base-100 shadow-lg rounded-xl p-4 
+      opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+
+      <p className="text-center font-semibold">
+        {user.displayName || user.email}
+      </p>
+
+      <button
+        onClick={handleLogout}
+        className="btn btn-sm btn-outline w-full mt-3"
+      >
+        Logout
+      </button>
+    </div>
+  </div>
+) :
+
           <div className='flex gap-2'>
             <Link to="/auth/login" className='bg-blue-300 w-25 h-8 text-center text-white rounded-md'>Login</Link>
 

@@ -1,41 +1,46 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useLoaderData, useNavigate } from "react-router";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
 
 const JobDetails = () => {
-  const data = useLoaderData();
-  const freelance = data;
-  console.log(freelance);
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const freelance = useLoaderData();
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
 const handleAcceptJob = async () => {
   try {
+    
+    const task = {
+      jobId: freelance._id,      
+      title: freelance.title,
+      summary: freelance.summary,
+      coverImage: freelance.coverImage,
+      category: freelance.category,
+      postedBy: freelance.postedBy,
+      workerEmail: user.email,   
+      status: "accepted",
+      acceptedAt: new Date(),
+    };
+
     const res = await fetch("http://localhost:3000/tasks", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...freelance, added_By: user?.email || "" }),
+      body: JSON.stringify(task),
     });
 
-    if (!res.ok) {
-      const text = await res.text(); // get raw HTML or error
-      console.error("Server error:", text);
-      throw new Error(`Server responded with status ${res.status}`);
-    }
+    if (!res.ok) throw new Error("Failed to accept job");
 
     const data = await res.json();
     console.log("Task created:", data);
     Swal.fire("Job accepted successfully!");
-    navigate("/myAcceptedTasks");
+    navigate("/myAcceptedTasks"); 
   } catch (err) {
     console.error("Failed to accept job:", err);
-    Swal.fire("Failed to accept job");
+    Swal.fire("This job is already accepted or there was an error!");
   }
 };
-
 
   const handleDelete = () => {
     Swal.fire({
@@ -50,33 +55,24 @@ const handleAcceptJob = async () => {
       if (result.isConfirmed) {
         fetch(`http://localhost:3000/freelance/${freelance._id}`, {
           method: "DELETE",
-          headers: { "Content-Type": "application/json" },
         })
-          .then((res) => res.json())
           .then(() => {
-            console.log(freelance);
+            Swal.fire("Deleted!", "Job has been deleted.", "success");
             navigate("/allJobs");
-            Swal.fire({
-              title: "Deleted!",
-              text: "Your file has been deleted.",
-              icon: "success",
-            });
           })
-          .catch(() => {
-            console.log(err);
-          });
+          .catch((err) => console.log(err));
       }
     });
   };
-    
+
   return (
-    <div className=" bg-blue-100">
-      <div className="max-w-6xl mx-auto px-5 py-25">
+    <div className="bg-blue-100 min-h-screen py-10">
+      <div className="max-w-6xl mx-auto px-5">
         <div className="card bg-base-100 shadow-xl border rounded-2xl overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 md:p-10">
             <img
               src={freelance.coverImage}
-              alt=""
+              alt={freelance.title}
               className="w-full h-full object-cover rounded-xl"
             />
 
@@ -100,7 +96,7 @@ const handleAcceptJob = async () => {
                 Posted on: {new Date(freelance.postedAt).toLocaleDateString()}
               </div>
 
-              <div className="pt-6 flex justify-center gap-4">
+              <div className="pt-6 flex gap-4 flex-wrap">
                 <button
                   onClick={handleAcceptJob}
                   className="btn rounded-full bg-gradient-to-r from-indigo-500 to-blue-300 hover:from-blue-600 hover:to-indigo-500"
@@ -110,17 +106,17 @@ const handleAcceptJob = async () => {
 
                 <Link
                   to={`/updateJob/${freelance._id}`}
-                  className="btn rounded-full bg-gradient-to-r from-indigo-500 to-blue-300 hover:from-blue-600 hover:to-indigo-500 text-white btn"
+                  className="btn rounded-full bg-gradient-to-r from-indigo-500 to-blue-300 hover:from-blue-600 hover:to-indigo-500 text-white"
                 >
-                  {" "}
                   Update
                 </Link>
 
-                <Link
+                <button
                   onClick={handleDelete}
-                  className="btn rounded-full bg-gradient-to-r from-red-500 to-pink-300 hover:from-red-600 hover:to-pink-500 text-white btn">
+                  className="btn rounded-full bg-gradient-to-r from-red-500 to-pink-300 hover:from-red-600 hover:to-pink-500 text-white"
+                >
                   Delete
-                </Link>
+                </button>
               </div>
             </div>
           </div>

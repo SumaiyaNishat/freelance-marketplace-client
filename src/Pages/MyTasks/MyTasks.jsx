@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
-
 import { JobCard } from "../../Components/JobCard/JobCard";
 import { toast } from "react-toastify";
 import { FaCheck, FaTimes } from "react-icons/fa";
@@ -10,60 +9,76 @@ const MyTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
 
- 
-  useEffect(() => {
-    fetch(`http://localhost:3000/my-tasks?email=${user.email}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setTasks(data);
-        setLoading(false);
-      })
-      .catch((err) => console.log(err));
-  }, [user.email]);
-
-  const handleTaskAction = () => {
-    fetch(`http://localhost:3000/my-tasks/${tasks._id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then(() => {
-        setTasks(tasks.filter((task) => task._id !== taskId));
-        toast.success("Task updated successfully!");
-      })
-      .catch((err) => console.log(err));
+  const fetchTasks = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/my-tasks?added_By=${user.email}`);
+      const data = await res.json();
+      setTasks(data);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  if (loading) {
-    return <div className="text-center mt-10">Loading tasks...</div>;
-  }
+  useEffect(() => {
+    if (user?.email) fetchTasks();
+  }, [user.email]);
 
-  if (tasks.length === 0) {
-    return <div className="text-center mt-10">No accepted tasks yet.</div>;
-  }
+  // MARK AS DONE
+  const handleDone = async (taskId) => {
+    try {
+      await fetch(`http://localhost:3000/my-tasks/${taskId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "done" }),
+      });
+      toast.success("Task marked as done!");
+      fetchTasks();
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update task!");
+    }
+  };
+
+  // CANCEL TASK
+  const handleCancel = async (taskId) => {
+    try {
+      await fetch(`http://localhost:3000/my-tasks/${taskId}`, { method: "DELETE" });
+      toast.success("Task canceled!");
+      fetchTasks();
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to cancel task!");
+    }
+  };
+
+  if (loading) return <div className="text-center mt-10">Loading tasks...</div>;
+  if (tasks.length === 0) return <div className="text-center mt-10">No accepted tasks yet.</div>;
 
   return (
     <div className="max-w-6xl mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">My Accepted Tasks</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {tasks.map((job) => (
-          <div key={job._id} className="card ">
-            {" "}
+        {tasks.map((task) => (
+          <div key={task._id} className="card">
             <div className="flex justify-end gap-5 mt-2 mr-2 pb-2">
               <button
-                onClick={handleTaskAction}
-                className="bg-green-500 text-white w-10 h-5 flex justify-center items-center  cursor-pointer"
+                onClick={() => handleDone(task._id)}
+                className="bg-green-500 text-white w-10 h-10 flex justify-center items-center cursor-pointer rounded-full"
+                title="Mark as Done"
               >
                 <FaCheck />
               </button>
 
               <button
-                onClick={handleTaskAction}
-                className="bg-red-500 text-white w-10 h-5 flex justify-center items-center cursor-pointer"
+                onClick={() => handleCancel(task._id)}
+                className="bg-red-500 text-white w-10 h-10 flex justify-center items-center cursor-pointer rounded-full"
+                title="Cancel Task"
               >
-                <FaTimes /> 
+                <FaTimes />
               </button>
             </div>
-            <JobCard job={job} />
+            <JobCard job={task} />
           </div>
         ))}
       </div>
